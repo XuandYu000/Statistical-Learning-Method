@@ -4,8 +4,8 @@
 测试集数量： 10000
 ------------------------------
 运行结果: 
-正确率： 81%
-运行时长： 46s
+正确率： 86.8%
+运行时长： 99s
 '''
 
 import numpy as np
@@ -23,7 +23,7 @@ def loadData(path):
     '''
     data = pd.read_csv(path, header=None)
     labels = data.iloc[:, 0].values
-    features = data.iloc[:, 1:].values
+    features = data.iloc[:, 1:].values / 255
 
     # to GPU
     features = torch.tensor(features , dtype=torch.float32).cuda()
@@ -52,7 +52,7 @@ def perceptron(trainData, trainLabel, iter = 30, lr = 0.0001):
     
     for _ in range(iter):
         for x, y in dataloader:
-            print(x.shape)
+            # print(x.shape)
             # 向量化计算
             predictions = torch.matmul(x, w) + b
             misclassified = (y * predictions) <= 0
@@ -86,8 +86,8 @@ if __name__== '__main__':
     start = time.time()
 
     # 读取数据
-    trainData, trainLabel = loadData("/root/Desktop/course/Statistical-Learning-Method/Mnist/mnist_train.csv")
-    testData, testLabel = loadData("/root/Desktop/course/Statistical-Learning-Method/Mnist/mnist_test.csv")
+    trainData, trainLabel = loadData("/root/Desktop/course/datasets/Mnist/mnist_train.csv")
+    testData, testLabel = loadData("/root/Desktop/course/datasets/Mnist/mnist_test.csv")
 
     # 训练获得权重
     w, b = perceptron(trainData, trainLabel, iter = 50)
