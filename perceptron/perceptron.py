@@ -27,6 +27,7 @@ def loadData(path):
 
     # to GPU
     features = torch.tensor(features , dtype=torch.float32).cuda()
+    # 感知机是一个二元分类器，标签需要转换为-1和1
     labels = torch.tensor(np.where(labels >= 5, 1, -1), dtype=torch.float32).cuda()
 
     return features, labels
